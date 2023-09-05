@@ -1,10 +1,50 @@
-<html>
-<body>
-<h2>BMI Calculator</h2>
-<form action="/calbmi" method="POST">
-    <input type="text" name="weight" placeholder="Weight in kg" required><br>
-    <input type="text" name="height" placeholder="Height in metre" required><br>
-    <input type="submit" value="Calculate">
-</form>
-</body>
-</html>
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/BMICalculatorServlet")
+public class BMICalculatorServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Retrieve weight and height from the form
+        String weightStr = request.getParameter("weight");
+        String heightStr = request.getParameter("height");
+
+        try {
+            // Parse weight and height as doubles
+            double weight = Double.parseDouble(weightStr);
+            double height = Double.parseDouble(heightStr);
+
+            // Calculate BMI (rounded to the nearest integer)
+            double bmi = Math.round((weight / (height * height)));
+
+            // Determine build type based on BMI
+            String buildType;
+            if (bmi < 18.5) {
+                buildType = "Underweight";
+            } else if (bmi < 25) {
+                buildType = "Normal";
+            } else if (bmi < 30) {
+                buildType = "Overweight";
+            } else if (bmi < 35) {
+                buildType = "Obese";
+            } else {
+                buildType = "Extremely Obese";
+            }
+
+            // Set BMI and build type as request attributes
+            request.setAttribute("bmi", bmi);
+            request.setAttribute("buildType", buildType);
+
+            // Forward the request to bmi_result.jsp
+            request.getRequestDispatcher("/bmi_result.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            // Handle invalid input (non-numeric weight or height)
+            request.setAttribute("error", "Invalid input. Please enter numeric values for weight and height.");
+            request.getRequestDispatcher("/index.html").forward(request, response);
+        }
+    }
+}
+
