@@ -1,3 +1,5 @@
+package th.mfu;
+
 import java.io.IOException;
 
 import jakarta.servlet.ServletException;
@@ -6,45 +8,45 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/calbmi")
+@WebServlet("/calbmi") // Add webservlet annotation to specify the URL mapping
 public class BMICalculatorServlet extends HttpServlet {
 
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Step 2: Get parameters from the request: "weight" and "height"
-        String weightParam = request.getParameter("weight");
-        String heightParam = request.getParameter("height");
+    protected void service(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Get parameters from the request: "weight" and "height"
+        double weight = Double.parseDouble(request.getParameter("weight"));
+        double height = Double.parseDouble(request.getParameter("height"));
 
-        try {
-            // Step 3: Calculate BMI
-            double weight = Double.parseDouble(weightParam);
-            double height = Double.parseDouble(heightParam);
-            double bmi = Math.round(weight / (height * height));
+        // Calculate BMI
+        double bmi = calculateBMI(weight, height);
 
-            // Step 4: Determine the build from BMI
-            String buildType;
-            if (bmi < 18.5) {
-                buildType = "Underweight";
-            } else if (bmi < 25) {
-                buildType = "Normal";
-            } else if (bmi < 30) {
-                buildType = "Overweight";
-            } else if (bmi < 35) {
-                buildType = "Obese";
-            } else {
-                buildType = "Extremely Obese";
-            }
+        // Determine the build from BMI
+        String build = determineBuild(bmi);
 
-            // Step 5: Add BMI and build to the request's attributes
-            request.setAttribute("bmi", bmi);
-            request.setAttribute("buildType", buildType);
+        // Add BMI and build to the request's attribute
+        request.setAttribute("bmi", bmi);
+        request.setAttribute("build", build);
 
-            // Step 6: Forward to the JSP for display
-            request.getRequestDispatcher("/bmi_result.jsp").forward(request, response);
-        } catch (NumberFormatException e) {
-            // Handle invalid input (non-numeric weight or height)
-            request.setAttribute("error", "Invalid input. Please enter numeric values for weight and height.");
-            request.getRequestDispatcher("/index.html").forward(request, response);
+        // Forward to a JSP for displaying the results
+        request.getRequestDispatcher("/bmiResult.jsp").forward(request, response);
+    }
+
+    private double calculateBMI(double weight, double height) {
+        // Calculate BMI using the formula: BMI = weight (kg) / (height (m) * height (m))
+        return weight / (height * height);
+    }
+
+    private String determineBuild(double bmi) {
+        // Determine build based on BMI
+        if (bmi < 18.5) {
+            return "Underweight";
+        } else if (bmi < 24.9) {
+            return "Normal";
+        } else if (bmi < 29.9) {
+            return "Overweight";
+        } else {
+            return "Obese";
         }
     }
 }
