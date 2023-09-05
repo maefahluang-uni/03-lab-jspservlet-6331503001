@@ -1,17 +1,13 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
-<head>
-    <title>BMI Calculator</title>
-</head>
+   <head>
+      <title>BMI Calculator</title>
+   </head>
 <body>
-<h2>BMI Calculator</h2>
-<form action="/BMICalculatorServlet" method="POST">
-    <label for="weight">Weight in kg:</label>
-    <input type="text" id="weight" name="weight" placeholder="Weight in kg" required><br>
-    <label for="height">Height in meters:</label>
-    <input type="text" id="height" name="height" placeholder="Height in meters" required><br>
-    <input type="submit" value="Calculate">
-</form>
+<img src="https://www.cdc.gov/healthyweight/images/assessing/bmi-adult-fb-600x315.jpg?_=07167">
+<!--TODO: show bmi below -->
+<h2>Result is <%= request.getAttribute("BMI") %></h2>
+<!--TODO: show built type below -->
+<h3>According to your BMI, you are considered <%= request.getAttribute("result") %></h3>
 </body>
 </html>
-
