@@ -33,10 +33,9 @@ public class TestBMICalculatorIT {
     }
 
     @Test
-    public void testCaclulate1() {
-
-        // Make a HTTP GET request to retrieve the last created Parolee.
-        try (Response response = client.target(WEB_URI+"?weight=70&height=1.5").request().get()) {
+    public void testCalculate1() {
+        // Make an HTTP GET request to retrieve the BMI result for weight=70 and height=1.5.
+        try (Response response = client.target(WEB_URI + "?weight=70&height=1.5").request().get()) {
 
             // Check that the HTTP response code is 200 OK.
             int responseCode = response.getStatus();
@@ -44,18 +43,15 @@ public class TestBMICalculatorIT {
 
             String jsonResponse = response.readEntity(String.class);
             assertThat(jsonResponse, CoreMatchers.containsString("Result is 31"));
-
             assertThat(jsonResponse, CoreMatchers.containsString("obese"));
-            _logger.info("IT1 test passed");
+            _logger.info("Test for obese build passed");
         }
     }
 
-    //TODO: add another test case for normal built such as weight=50 and height=1.5.
     @Test
-    public void testCaclulate2() {
-
-        // Make a HTTP GET request to retrieve the last created Parolee.
-        try (Response response = client.target(WEB_URI+"?weight=50&height=1.5").request().get()) {
+    public void testCalculate2() {
+        // Make an HTTP GET request to retrieve the BMI result for weight=50 and height=1.5.
+        try (Response response = client.target(WEB_URI + "?weight=50&height=1.5").request().get()) {
 
             // Check that the HTTP response code is 200 OK.
             int responseCode = response.getStatus();
@@ -63,10 +59,8 @@ public class TestBMICalculatorIT {
 
             String jsonResponse = response.readEntity(String.class);
             assertThat(jsonResponse, CoreMatchers.containsString("Result is 22"));
-
             assertThat(jsonResponse, CoreMatchers.containsString("normal"));
-            _logger.info("IT1 test passed");
+            _logger.info("Test for normal build passed");
         }
     }
-
 }
