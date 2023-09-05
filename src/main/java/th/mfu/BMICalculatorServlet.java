@@ -8,46 +8,22 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/calbmi") // Add webservlet annotation to specify the URL mapping
-public class BMICalculatorServlet extends HttpServlet {
+//TODO: add webservlet to "/calbmi"
+public class BMICalculatorServlet extends HttpServlet{
 
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Get parameters from the request: "weight" and "height"
-        double weight = Double.parseDouble(request.getParameter("weight"));
-        double height = Double.parseDouble(request.getParameter("height"));
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //TODO: get parameter from request: "weight" and "height"
+        
+        //TODO: calculate bmi
 
-        // Calculate BMI
-        double bmi = calculateBMI(weight, height);
+        //TODO: determine the built from BMI
+      
+        //TODO: add bmi and built to the request's attribute
 
-        // Determine the build from BMI
-        String build = determineBuild(bmi);
-
-        // Add BMI and build to the request's attribute
-        request.setAttribute("bmi", bmi);
-        request.setAttribute("build", build);
-
-        // Forward to a JSP for displaying the results
-        request.getRequestDispatcher("/bmiResult.jsp").forward(request, response);
+        //TODO: forward to jsp
+           
     }
-
-    private double calculateBMI(double weight, double height) {
-        // Calculate BMI using the formula: BMI = weight (kg) / (height (m) * height (m))
-        return weight / (height * height);
-    }
-
-    private String determineBuild(double bmi) {
-        // Determine build based on BMI
-        if (bmi < 18.5) {
-            return "Underweight";
-        } else if (bmi < 24.9) {
-            return "Normal";
-        } else if (bmi < 29.9) {
-            return "Overweight";
-        } else {
-            return "Obese";
-        }
-    }
+    
 }
 
